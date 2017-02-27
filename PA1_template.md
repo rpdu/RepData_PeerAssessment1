@@ -58,14 +58,14 @@ main="Histogram of the total number of steps taken each day",
 xlab="number of steps taken each day"
 )
 ```
-![plot of r hist-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/Rplot1.png)
+![plot of r hist-chunk](https://github.com/rpdu/RepData_PeerAssessment1/blob/master/figure/Rplot1.png)
 
 3. Calculate and report the mean and median of the total number of steps taken per day
 ```{r M_M, results='asis', echo=TRUE}
 df_M_M <- data.frame(Mean = mean(df_daily$steps, na.rm=TRUE), Median = median(df_daily$steps, na.rm=TRUE))
 knitr::kable(df_M_M)
 ```
-![table of r M_M-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/table1.png)
+![table of r M_M-chunk](https://github.com/rpdu/RepData_PeerAssessment1/blob/master/figure/table1.PNG)
 
 
 ## What is the average daily activity pattern?
@@ -76,7 +76,7 @@ knitr::kable(df_M_M)
 df_interval_avg <- df_activity %>% group_by(interval) %>% summarize(mean_steps = mean(steps, na.rm = TRUE))
 plot(df_interval_avg$interval,df_interval_avg$mean_steps, type="l", xlab="Intervals",ylab = "Average Steps")
 ```
-![plot of r avg_steps-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/Rplot2.png)
+![plot of r avg_steps-chunk](https://github.com/rpdu/RepData_PeerAssessment1/blob/master/figure/Rplot2.png)
 
 
 2.  Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
@@ -86,7 +86,7 @@ mx <-max(df_interval_avg$mean_steps)
 five_minute_interval <- df_interval_avg %>% select(interval) %>% filter(df_interval_avg$mean_steps == mx)
 knitr::kable(five_minute_interval)
 ```
-![table of r max_avg_steps-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/table2.png)
+![table of r max_avg_steps-chunk](https://github.com/rpdu/RepData_PeerAssessment1/blob/master/figure/table2.PNG)
 
 
 ## Imputing missing values
@@ -97,7 +97,7 @@ df_missing<-sum(is.na(df_activity$steps))
 names(df_missing)<-"Total : "
 knitr::kable(df_missing)
 ```
-![table of r Nas-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/table3.png)
+![table of r Nas-chunk](https://github.com/rpdu/RepData_PeerAssessment1/blob/master/figure/table3.PNG)
 
 2.  Strategy for filling in all of the missing values in the dataset: use **Hmisc** package
 
@@ -118,14 +118,14 @@ hist(df_daily_wo_na$steps,col=brewer.pal(5,"Set3"),
 main="Histogram of the total number of steps taken each day (without NA)",
 xlab="number of steps taken each day")
 ```
-![plot of r hist_wo_na-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/Rplot3.png)
+![plot of r hist_wo_na-chunk](https://github.com/rpdu/RepData_PeerAssessment1/blob/master/figure/Rplot3.png)
 
 and calculate and report the mean and median of the total number of steps taken per day
 ```{r M_M_wo_na, results='asis', echo=TRUE}
 df_M_M_wo_na <- data.frame(Mean = mean(df_daily_wo_na$steps, na.rm=TRUE), Median = median(df_daily_wo_na$steps, na.rm=TRUE))
 knitr::kable(df_M_M_wo_na)
 ```
-![table of r M_M_wo_na-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/table4.png)
+![table of r M_M_wo_na-chunk](https://github.com/rpdu/RepData_PeerAssessment1/blob/master/figure/table4.PNG)
 
 
 Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
@@ -153,4 +153,4 @@ xyplot(df_interval_avg_wo_na$mean_steps ~ df_interval_avg_wo_na$interval|df_inte
             xlab="Intervals",ylab="Number of steps",type = "l",
             layout=c(1,2))
 ```
-![plot of r xyplot-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/Rplot4.png)
+![plot of r xyplot-chunk](https://github.com/rpdu/RepData_PeerAssessment1/blob/master/figure/Rplot4.png)
