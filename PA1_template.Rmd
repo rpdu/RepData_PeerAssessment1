@@ -37,48 +37,59 @@ if(!file.exists("./activity")){
 ```
 
 ## What is mean total number of steps taken per day?
-Load file into data frame. Aggregate data to report the mean and median total number of steps taken per day.
-
-```{r t_steps, results='asis', echo=TRUE}
+Load file into data frame.
+```{r t_load, results='asis', echo=TRUE}
 df_activity <- read.csv("./activity/activity.csv", na.strings="NA", stringsAsFactors=FALSE)
 df_activity$date<-as.Date.character(df_activity$date,format = "%Y-%m-%d")
-
-df_daily_summ <- df_activity %>% group_by(date) %>% summarise(sum_steps = sum(steps, na.rm = TRUE) ,mean_steps = mean(steps, na.rm = TRUE), med_steps= median(steps, na.rm = TRUE))
-names(df_daily_summ)<-c("Date","Total steps", "Average Steps", "Median Steps")
-
-df_daily <- aggregate(df_activity$steps, by=list(df_activity$date), FUN=sum, na.rm=TRUE)
-names(df_daily)<-c("date","steps")
-knitr::kable(df_daily_summ)
 ```
 
+1. Calculate the total number of steps taken per day.
+```{r t_steps, results='asis', echo=TRUE}
+df_daily <- aggregate(df_activity$steps, by=list(df_activity$date), FUN=sum, na.rm=TRUE)
+names(df_daily)<-c("date","steps")
+```
+
+2. Make a histogram of the total number of steps taken each day
 ## Histogram of the total number of steps taken each day
 ```{r hist, echo=TRUE}
-
 hist(df_daily$steps,col=brewer.pal(5,"Set3"),
 main="Histogram of the total number of steps taken each day",
-xlab="number of steps taken each day")
+xlab="number of steps taken each day"
+)
+```
+
+3. Calculate and report the mean and median of the total number of steps taken per day
+```{r M_M, results='asis', echo=TRUE}
+df_M_M <- data.frame(Mean = mean(df_daily$steps, na.rm=TRUE), Median = median(df_daily$steps, na.rm=TRUE))
+knitr::kable(df_M_M)
 ```
 
 ## What is the average daily activity pattern?
-Q.1  Make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+
+1.  Make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 ```{r avg_steps, echo=TRUE}
 df_interval_avg <- df_activity %>% group_by(interval) %>% summarize(mean_steps = mean(steps, na.rm = TRUE))
 plot(df_interval_avg$interval,df_interval_avg$mean_steps, type="l", xlab="Intervals",ylab = "Average Steps")
 ```
 
-Q.2  Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+2.  Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 ```{r max_avg_steps , results='asis', echo=TRUE}
-max(df_interval_avg$mean_steps)
+mx <-max(df_interval_avg$mean_steps)
+five_minute_interval <- df_interval_avg %>% select(interval) %>% filter(df_interval_avg$mean_steps == mx)
+knitr::kable(five_minute_interval)
 ```
 
 ## Imputing missing values
 1. The total number of rows with NA:
 
 ```{r Nas, results='asis', echo=TRUE}
-sum(is.na(df_activity$steps))
+df_missing<-sum(is.na(df_activity$steps))
+names(df_missing)<-"Total : "
+knitr::kable(df_missing)
 ```
+
 
 2.  Strategy for filling in all of the missing values in the dataset: use **Hmisc** package
 
@@ -90,21 +101,20 @@ df_activity_wo_na$steps <- with(df_activity, impute(steps, mean))
 
 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
 
-```{r report_wo_na, results='asis', echo=TRUE}
-df_daily_summ_wo_na <- df_activity_wo_na %>% group_by(date) %>% summarise(sum_steps = sum(steps, na.rm = TRUE) ,mean_steps = mean(steps, na.rm = TRUE), med_steps= median(steps, na.rm = TRUE))
-names(df_daily_summ_wo_na)<-c("Date","Total steps", "Average Steps", "Median Steps")
-
-knitr::kable(df_daily_summ_wo_na)
-```
-
 ## Histogram of the total number of steps taken each day (without NA)
 ```{r hist_wo_na, echo=TRUE}
 df_daily_wo_na <- aggregate(df_activity_wo_na$steps, by=list(df_activity_wo_na$date), FUN=sum, na.rm=TRUE)
 names(df_daily_wo_na)<-c("date","steps")
 
 hist(df_daily_wo_na$steps,col=brewer.pal(5,"Set3"),
-main="Histogram of the total number of steps taken each day (without NÁ)",
+main="Histogram of the total number of steps taken each day (without NA)",
 xlab="number of steps taken each day")
+```
+
+and calculate and report the mean and median of the total number of steps taken per day
+```{r M_M_wo_na, results='asis', echo=TRUE}
+df_M_M_wo_na <- data.frame(Mean = mean(df_daily_wo_na$steps, na.rm=TRUE), Median = median(df_daily_wo_na$steps, na.rm=TRUE))
+knitr::kable(df_M_M_wo_na)
 ```
 
 Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
