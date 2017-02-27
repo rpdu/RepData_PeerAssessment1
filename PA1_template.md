@@ -58,7 +58,7 @@ main="Histogram of the total number of steps taken each day",
 xlab="number of steps taken each day"
 )
 ```
-![plot of r hist-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/plot1.png)
+![plot of r hist-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/Rplot1.png)
 
 3. Calculate and report the mean and median of the total number of steps taken per day
 ```{r M_M, results='asis', echo=TRUE}
@@ -76,7 +76,7 @@ knitr::kable(df_M_M)
 df_interval_avg <- df_activity %>% group_by(interval) %>% summarize(mean_steps = mean(steps, na.rm = TRUE))
 plot(df_interval_avg$interval,df_interval_avg$mean_steps, type="l", xlab="Intervals",ylab = "Average Steps")
 ```
-![plot of r avg_steps-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/plot2.png)
+![plot of r avg_steps-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/Rplot2.png)
 
 
 2.  Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
@@ -118,7 +118,7 @@ hist(df_daily_wo_na$steps,col=brewer.pal(5,"Set3"),
 main="Histogram of the total number of steps taken each day (without NA)",
 xlab="number of steps taken each day")
 ```
-![plot of r hist_wo_na-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/plot3.png)
+![plot of r hist_wo_na-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/Rplot3.png)
 
 and calculate and report the mean and median of the total number of steps taken per day
 ```{r M_M_wo_na, results='asis', echo=TRUE}
@@ -153,4 +153,4 @@ xyplot(df_interval_avg_wo_na$mean_steps ~ df_interval_avg_wo_na$interval|df_inte
             xlab="Intervals",ylab="Number of steps",type = "l",
             layout=c(1,2))
 ```
-![plot of r xyplot-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/plot4.png)
+![plot of r xyplot-chunk](https://github.com/rpdu/RepData_PeerAssessment1/figure/Rplot4.png)
